@@ -17,12 +17,16 @@ const STYLE = `
   }
   .ing-chip.active { background: #2A4D10; color: #F0EAD6; border-color: #2A4D10; }
   .ing-chip-name { cursor: pointer; user-select: none; }
+
+  .qty-sep { width:1px; background:rgba(255,255,255,0.3); height:14px; margin:0 3px; }
+  .qty-star-label { font-size:11px; opacity:0.8; margin-left:2px; }
+
   .qty-btn { background:none; border:none; cursor:pointer; font-size:14px; line-height:1;
     padding:0 1px; color:inherit; opacity:0.85; font-family:inherit; }
   .qty-btn:hover { opacity:1; }
   .qty-direct {
-    width: 38px; text-align: center; border: none;
-    background: rgba(255,255,255,0.25); border-radius: 6px;
+    width: 34px; text-align: center; border: none;
+    background: rgba(255,255,255,0.2); border-radius: 5px;
     font-family: 'Crimson Text', serif; font-size: 12px; font-weight: 700;
     color: inherit; padding: 1px 2px; outline: none;
     -moz-appearance: textfield;
@@ -34,37 +38,32 @@ const STYLE = `
     margin-left:2px; display:flex; align-items:center; justify-content:center; }
   .qty-add:hover { background:#EDD99A; }
 
-  .custom-fish-form {
-    display: flex; gap: 5px; flex-wrap: wrap; align-items: center;
-    margin-top: 6px; padding: 8px; background: #F0EAD6;
-    border-radius: 8px; border: 1px dashed #B09050;
-  }
-  .custom-form-input {
-    border: 1px solid #B09050; border-radius: 6px; padding: 3px 7px;
-    font-family: 'Crimson Text', serif; font-size: 12px;
-    background: #FAF5E8; color: #3A2800; outline: none; min-width: 0;
-  }
-  .custom-form-input:focus { border-color: #2A4D10; }
-  .custom-form-input.name  { flex: 1; min-width: 90px; }
-  .custom-form-input.price { width: 56px; text-align: center; }
-  .btn-green { background: #2A4D10; color: #F0EAD6; border: none; border-radius: 6px;
-    padding: 3px 10px; cursor: pointer; font-family: 'Crimson Text', serif; font-size: 12px; }
-  .btn-ghost { background: none; border: 1px solid #B09050; border-radius: 6px;
-    padding: 3px 8px; cursor: pointer; font-family: 'Crimson Text', serif; font-size: 12px;
-    color: #8B6914; }
-  .btn-add-custom { background: none; border: 1px dashed #9B7B2E; border-radius: 12px;
-    padding: 2px 9px; cursor: pointer; font-family: 'Crimson Text', serif; font-size: 12px;
-    color: #9B7B2E; margin-top: 5px; }
-  .btn-add-custom:hover { background: #EDD99A; }
-  .remove-x { background: none; border: none; cursor: pointer; font-size: 13px;
-    color: #8B4000; padding: 0 2px; line-height: 1; opacity: 0.7; }
-  .remove-x:hover { opacity: 1; }
+  .custom-fish-form { display:flex; gap:5px; flex-wrap:wrap; align-items:center;
+    margin-top:6px; padding:8px; background:#F0EAD6;
+    border-radius:8px; border:1px dashed #B09050; }
+  .custom-form-input { border:1px solid #B09050; border-radius:6px; padding:3px 7px;
+    font-family:'Crimson Text',serif; font-size:12px;
+    background:#FAF5E8; color:#3A2800; outline:none; min-width:0; }
+  .custom-form-input:focus { border-color:#2A4D10; }
+  .custom-form-input.name  { flex:1; min-width:90px; }
+  .custom-form-input.price { width:52px; text-align:center; }
+  .btn-green { background:#2A4D10; color:#F0EAD6; border:none; border-radius:6px;
+    padding:3px 10px; cursor:pointer; font-family:'Crimson Text',serif; font-size:12px; }
+  .btn-ghost { background:none; border:1px solid #B09050; border-radius:6px;
+    padding:3px 8px; cursor:pointer; font-family:'Crimson Text',serif; font-size:12px; color:#8B6914; }
+  .btn-add-custom { background:none; border:1px dashed #9B7B2E; border-radius:12px;
+    padding:2px 9px; cursor:pointer; font-family:'Crimson Text',serif; font-size:12px;
+    color:#9B7B2E; margin-top:5px; }
+  .btn-add-custom:hover { background:#EDD99A; }
+  .remove-x { background:none; border:none; cursor:pointer; font-size:13px;
+    color:#8B4000; padding:0 2px; line-height:1; opacity:0.7; }
+  .remove-x:hover { opacity:1; }
 
   .cost-row { display:flex; align-items:center; justify-content:space-between;
-    padding:4px 0; border-bottom:1px solid #EDD9A8; font-size:12.5px; color:#3A2800; }
+    padding:4px 0; border-bottom:1px solid #EDD9A8; font-size:12px; color:#3A2800; gap:6px; }
   .cost-row:last-child { border-bottom:none; }
-  .cost-input { width:50px; text-align:right; border:1px solid #B09050; border-radius:5px;
-    padding:2px 5px; font-family:'Crimson Text',serif; font-size:12px;
+  .cost-input { width:46px; text-align:right; border:1px solid #B09050; border-radius:5px;
+    padding:2px 4px; font-family:'Crimson Text',serif; font-size:12px;
     background:#FAF5E8; color:#3A2800; outline:none; }
   .cost-input:focus { border-color:#2A4D10; }
 
@@ -86,15 +85,21 @@ const STYLE = `
   .recipe-card.almost   { border-left-color:#C8922A; }
   .recipe-card.far      { border-left-color:#C87070; }
 
-  .plan-card { background:#FFFCF3; border:1px solid #A8C890; border-left:5px solid #2A8F2A;
+  .plan-group { background:#FFFCF3; border:1px solid #A8C890; border-left:5px solid #2A8F2A;
     border-radius:10px; padding:13px 15px; margin-bottom:9px;
     box-shadow:0 2px 6px rgba(0,0,0,0.06); }
+  .plan-group.base-only { border-left-color:#9B7B2E; border-color:#D4B896; }
+
+  .mode-row { display:flex; justify-content:space-between; align-items:center;
+    padding:5px 8px; border-radius:6px; margin-top:6px; font-size:12px; }
+  .mode-row.star { background:#EAF8E0; }
+  .mode-row.base { background:#F5F0E0; }
 
   .summary-bar { background:#2A4D10; color:#F0EAD6; border-radius:10px;
-    padding:12px 16px; margin-bottom:14px; display:flex; gap:20px; flex-wrap:wrap;
+    padding:12px 16px; margin-bottom:14px; display:flex; gap:16px; flex-wrap:wrap;
     align-items:center; font-family:'Cinzel',serif; }
   .summary-stat { display:flex; flex-direction:column; align-items:center; }
-  .summary-val  { font-size:20px; font-weight:700; line-height:1.1; }
+  .summary-val  { font-size:19px; font-weight:700; line-height:1.1; }
   .summary-lbl  { font-size:10px; opacity:0.75; text-transform:uppercase; letter-spacing:0.5px; }
 
   .tag { display:inline-flex; align-items:center; gap:3px; font-size:11px;
@@ -114,8 +119,6 @@ const STYLE = `
   .cat-label { font-size:11px; font-weight:700; color:#9B7B2E; margin-bottom:5px;
     text-transform:uppercase; letter-spacing:0.6px; margin-top:12px; }
   .cat-label:first-of-type { margin-top:0; }
-  .star-toggle { display:inline-flex; align-items:center; gap:6px; cursor:pointer;
-    font-size:12.5px; color:#8B6914; user-select:none; }
 
   .scroll { overflow-y:auto; max-height:calc(100vh - 165px); padding-right:3px; }
   .scroll::-webkit-scrollbar { width:4px; }
@@ -126,21 +129,21 @@ const STYLE = `
 `;
 
 /* ══════════════════════════════════════════════════════
-   INGREDIENT DATA  (sellPrice = base, starPrice = star; no-star items have starPrice = sellPrice)
+   INGREDIENT DATA
 ══════════════════════════════════════════════════════ */
 const INGREDIENT_CATEGORIES = [
   { name:"Fish", icon:"🐟", items:[
-    { id:"cutthroat_trout",  name:"Cutthroat Trout",  provides:["any_fish","any_trout"],               sellPrice:125, starPrice:187 },
-    { id:"prism_trout",      name:"Prism Trout",       provides:["any_fish","any_trout"],               sellPrice:115, starPrice:172 },
-    { id:"rainbow_trout",    name:"Rainbow Trout",     provides:["any_fish","any_trout"],               sellPrice:90,  starPrice:135 },
-    { id:"bahari_bass",      name:"Bahari Bass",       provides:["any_fish","any_bass"],                sellPrice:36,  starPrice:54  },
-    { id:"black_sea_bass",   name:"Black Sea Bass",    provides:["any_fish","any_bass"],                sellPrice:100, starPrice:150 },
-    { id:"largemouth_bass",  name:"Largemouth Bass",   provides:["any_fish","any_bass"],                sellPrice:49,  starPrice:73  },
-    { id:"smallmouth_bass",  name:"Smallmouth Bass",   provides:["any_fish","any_bass"],                sellPrice:49,  starPrice:73  },
-    { id:"bahari_bream",     name:"Bahari Bream",      provides:["any_fish","bahari_bream"], sellPrice:55,  starPrice:82  },
-    { id:"channel_catfish",  name:"Channel Catfish",   provides:["any_fish","any_catfish"],             sellPrice:90,  starPrice:135 },
-    { id:"kilima_catfish",   name:"Kilima Catfish",    provides:["any_fish","any_catfish"],             sellPrice:55,  starPrice:82  },
-    { id:"stalking_catfish", name:"Stalking Catfish",  provides:["any_fish","any_catfish"],             sellPrice:200, starPrice:300 },
+    { id:"cutthroat_trout",  name:"Cutthroat Trout",  provides:["any_fish","any_trout"],   sellPrice:125, starPrice:187 },
+    { id:"prism_trout",      name:"Prism Trout",       provides:["any_fish","any_trout"],   sellPrice:115, starPrice:172 },
+    { id:"rainbow_trout",    name:"Rainbow Trout",     provides:["any_fish","any_trout"],   sellPrice:90,  starPrice:135 },
+    { id:"bahari_bass",      name:"Bahari Bass",       provides:["any_fish","any_bass"],    sellPrice:36,  starPrice:54  },
+    { id:"black_sea_bass",   name:"Black Sea Bass",    provides:["any_fish","any_bass"],    sellPrice:100, starPrice:150 },
+    { id:"largemouth_bass",  name:"Largemouth Bass",   provides:["any_fish","any_bass"],    sellPrice:49,  starPrice:73  },
+    { id:"smallmouth_bass",  name:"Smallmouth Bass",   provides:["any_fish","any_bass"],    sellPrice:49,  starPrice:73  },
+    { id:"bahari_bream",     name:"Bahari Bream",      provides:["any_fish","bahari_bream"],sellPrice:55,  starPrice:82  },
+    { id:"channel_catfish",  name:"Channel Catfish",   provides:["any_fish","any_catfish"], sellPrice:90,  starPrice:135 },
+    { id:"kilima_catfish",   name:"Kilima Catfish",    provides:["any_fish","any_catfish"], sellPrice:55,  starPrice:82  },
+    { id:"stalking_catfish", name:"Stalking Catfish",  provides:["any_fish","any_catfish"], sellPrice:200, starPrice:300 },
   ]},
   { name:"Crabs & Seafood", icon:"🦀", items:[
     { id:"bahari_crab",     name:"Bahari Crab",     provides:["any_crab"],    sellPrice:21,  starPrice:31  },
@@ -162,21 +165,21 @@ const INGREDIENT_CATEGORIES = [
     { id:"elder_clam_mushroom",name:"Elder Clam Mushroom",provides:["any_mushroom"], sellPrice:23, starPrice:34 },
   ]},
   { name:"Crops", icon:"🌱", items:[
-    { id:"apple",              name:"Apple",         provides:["apple","any_fruit"],       sellPrice:64, starPrice:96  },
-    { id:"blueberries",        name:"Blueberries",   provides:["blueberries","any_fruit"], sellPrice:39, starPrice:58  },
-    { id:"bok_choy",           name:"Bok Choy",      provides:["bok_choy"],                sellPrice:30, starPrice:45  },
-    { id:"batterfly_beans",    name:"Batterfly Beans",provides:["batterfly_beans"],         sellPrice:23, starPrice:34  },
-    { id:"carrot",             name:"Carrot",        provides:["carrot","any_vegetable"],  sellPrice:23, starPrice:34  },
-    { id:"corn",               name:"Corn",          provides:["corn","any_vegetable"],    sellPrice:40, starPrice:60  },
-    { id:"napa_cabbage",       name:"Napa Cabbage",  provides:["napa_cabbage"],            sellPrice:40, starPrice:60  },
-    { id:"onion",              name:"Onion",         provides:["onion","any_vegetable"],   sellPrice:30, starPrice:45  },
-    { id:"potato",             name:"Potato",        provides:["potato","any_vegetable"],  sellPrice:45, starPrice:67  },
-    { id:"rockhopper_pumpkin", name:"R. Pumpkin",    provides:["rockhopper_pumpkin"],       sellPrice:88, starPrice:132 },
-    { id:"rice",               name:"Rice",          provides:["rice"],                    sellPrice:27, starPrice:40  },
-    { id:"spicy_pepper",       name:"Spicy Pepper",  provides:["spicy_pepper"],            sellPrice:32, starPrice:48  },
-    { id:"tomato",             name:"Tomato",        provides:["tomato","any_vegetable"],  sellPrice:23, starPrice:34  },
-    { id:"wheat",              name:"Wheat",         provides:["wheat"],                   sellPrice:33, starPrice:49  },
-    { id:"other_veg",          name:"Other Veg",     provides:["any_vegetable"],           sellPrice:0,  starPrice:0   },
+    { id:"apple",              name:"Apple",          provides:["apple","any_fruit"],       sellPrice:64, starPrice:96  },
+    { id:"blueberries",        name:"Blueberries",    provides:["blueberries","any_fruit"], sellPrice:39, starPrice:58  },
+    { id:"bok_choy",           name:"Bok Choy",       provides:["bok_choy"],                sellPrice:30, starPrice:45  },
+    { id:"batterfly_beans",    name:"Batterfly Beans",provides:["batterfly_beans"],          sellPrice:23, starPrice:34  },
+    { id:"carrot",             name:"Carrot",         provides:["carrot","any_vegetable"],  sellPrice:23, starPrice:34  },
+    { id:"corn",               name:"Corn",           provides:["corn","any_vegetable"],    sellPrice:40, starPrice:60  },
+    { id:"napa_cabbage",       name:"Napa Cabbage",   provides:["napa_cabbage"],            sellPrice:40, starPrice:60  },
+    { id:"onion",              name:"Onion",          provides:["onion","any_vegetable"],   sellPrice:30, starPrice:45  },
+    { id:"potato",             name:"Potato",         provides:["potato","any_vegetable"],  sellPrice:45, starPrice:67  },
+    { id:"rockhopper_pumpkin", name:"R. Pumpkin",     provides:["rockhopper_pumpkin"],       sellPrice:88, starPrice:132 },
+    { id:"rice",               name:"Rice",           provides:["rice"],                    sellPrice:27, starPrice:40  },
+    { id:"spicy_pepper",       name:"Spicy Pepper",   provides:["spicy_pepper"],            sellPrice:32, starPrice:48  },
+    { id:"tomato",             name:"Tomato",         provides:["tomato","any_vegetable"],  sellPrice:23, starPrice:34  },
+    { id:"wheat",              name:"Wheat",          provides:["wheat"],                   sellPrice:33, starPrice:49  },
+    { id:"other_veg",          name:"Other Veg",      provides:["any_vegetable"],           sellPrice:0,  starPrice:0   },
   ]},
   { name:"Herbs & Spices", icon:"🌿", items:[
     { id:"wild_garlic",      name:"Wild Garlic",      provides:["wild_garlic"],               sellPrice:23,  starPrice:34  },
@@ -238,13 +241,11 @@ const LABELS = {
   piksil_berries:"Piksil Berries",any_fruit:"Any Fruit",
   batterfly_beans:"Batterfly Beans",kopaa_nuts:"Kopaa Nuts",
   emerald_carpet_moss:"Emerald Carpet Moss",crystal_lake_lotus:"Crystal Lake Lotus",
-  bahari_bream:"Bahari Bream",
 };
 const lbl = id => LABELS[id] || id.replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCase());
 
 /* ══════════════════════════════════════════════════════
-   RECIPES — prices updated from spreadsheet
-   sellPrice = base per dish, starSellPrice = star per dish
+   RECIPES (69)
 ══════════════════════════════════════════════════════ */
 const RECIPES = [
   {name:"Congee",                  sellPrice:53,  starSellPrice:79,  servings:1, ings:[{id:"rice",qty:2}]},
@@ -319,103 +320,224 @@ const RECIPES = [
 ];
 
 /* ══════════════════════════════════════════════════════
-   OPTIMIZER ENGINE
+   POOL & COST HELPERS
+   quantities shape: { [id]: { base: number, star: number } }
 ══════════════════════════════════════════════════════ */
-function buildPool(quantities, extraItems = []) {
+const getBase = (q, id) => q[id]?.base || 0;
+const getStar = (q, id) => q[id]?.star || 0;
+const getTotal = (q, id) => getBase(q, id) + getStar(q, id);
+
+function buildPool(quantities, extraItems, mode = "combined") {
+  // mode: "combined" | "base" | "star"
   const pool = {};
   [...ALL_ITEMS, ...extraItems].forEach(item => {
-    const q = quantities[item.id] || 0;
-    if (q > 0) item.provides.forEach(p => { pool[p] = (pool[p] || 0) + q; });
+    const q = mode === "base"   ? getBase(quantities, item.id)
+            : mode === "star"   ? getStar(quantities, item.id)
+            : getTotal(quantities, item.id);
+    if (q > 0) item.provides.forEach(p => { pool[p] = (pool[p]||0) + q; });
   });
   return pool;
 }
 
-function buildCheapest(quantities, costs, starQuality, extraItems = []) {
+// Cheapest cost for each provided_id. Star mode: prefer star providers, fall back to base.
+function buildCheapest(quantities, costs, extraItems, mode = "base") {
   const map = {};
   [...ALL_ITEMS, ...extraItems].forEach(item => {
-    if ((quantities[item.id] || 0) > 0) {
-      const c = starQuality
-        ? (costs[item.id + "_star"] ?? costs[item.id] ?? item.starPrice)
-        : (costs[item.id] ?? item.sellPrice);
+    const starQ = getStar(quantities, item.id);
+    const baseQ = getBase(quantities, item.id);
+    if (mode === "star" && starQ > 0) {
+      const c = costs[item.id + "_star"] ?? item.starPrice;
+      item.provides.forEach(p => { if (map[p] === undefined || c < map[p]) map[p] = c; });
+    } else if (mode === "star" && baseQ > 0) {
+      // fallback to base cost when no star available
+      const c = costs[item.id] ?? item.sellPrice;
+      item.provides.forEach(p => { if (map[p] === undefined || c < map[p]) map[p] = c; });
+    } else if (mode === "base" && baseQ > 0) {
+      const c = costs[item.id] ?? item.sellPrice;
       item.provides.forEach(p => { if (map[p] === undefined || c < map[p]) map[p] = c; });
     }
   });
   return map;
 }
 
-function deductIngredients(recipe, numCooks, remaining, extraItems = []) {
-  for (const { id, qty } of recipe.ings) {
+// Deduct from remaining (mutates). Returns total cost of ingredients used.
+function deduct(recipe, numCooks, remaining, costs, extraItems, mode = "base") {
+  let totalCost = 0;
+  const allItems = [...ALL_ITEMS, ...extraItems];
+  for (const {id, qty} of recipe.ings) {
     let need = qty * numCooks;
-    const providers = [...ALL_ITEMS, ...extraItems]
-      .filter(item => item.provides.includes(id) && (remaining[item.id] || 0) > 0)
-      .sort((a, b) => (remaining[b.id] || 0) - (remaining[a.id] || 0));
-    for (const p of providers) {
+    if (mode === "star") {
+      // Star first
+      const starProvs = allItems
+        .filter(item => item.provides.includes(id) && getStar(remaining, item.id) > 0)
+        .sort((a,b) => getStar(remaining, b.id) - getStar(remaining, a.id));
+      for (const p of starProvs) {
+        if (need <= 0) break;
+        const use = Math.min(need, getStar(remaining, p.id));
+        if (!remaining[p.id]) remaining[p.id] = {base:0, star:0};
+        remaining[p.id].star -= use;
+        totalCost += use * (costs[p.id + "_star"] ?? p.starPrice);
+        need -= use;
+      }
+    }
+    // Base (always runs for base mode; runs as fallback for star mode)
+    const baseProvs = allItems
+      .filter(item => item.provides.includes(id) && getBase(remaining, item.id) > 0)
+      .sort((a,b) => getBase(remaining, b.id) - getBase(remaining, a.id));
+    for (const p of baseProvs) {
       if (need <= 0) break;
-      const use = Math.min(need, remaining[p.id] || 0);
-      remaining[p.id] = (remaining[p.id] || 0) - use;
+      const use = Math.min(need, getBase(remaining, p.id));
+      if (!remaining[p.id]) remaining[p.id] = {base:0, star:0};
+      remaining[p.id].base -= use;
+      totalCost += use * (costs[p.id] ?? p.sellPrice);
       need -= use;
     }
   }
+  return totalCost;
 }
 
-function runOptimizer(quantities, costs, starQuality, extraItems) {
-  const remaining = { ...quantities };
-  const cheapest0 = buildCheapest(remaining, costs, starQuality, extraItems);
+/* ══════════════════════════════════════════════════════
+   OPTIMIZER — two-pass: star mode first, base with leftovers
+══════════════════════════════════════════════════════ */
+function runOptimizer(quantities, costs, customFishItems) {
+  // Deep copy remaining
+  const remaining = {};
+  [...ALL_ITEMS, ...customFishItems].forEach(item => {
+    const v = quantities[item.id];
+    if (v && (v.base > 0 || v.star > 0)) remaining[item.id] = {base: v.base||0, star: v.star||0};
+  });
+
+  const starCheapest0 = buildCheapest(remaining, costs, customFishItems, "star");
+  const baseCheapest0 = buildCheapest(remaining, costs, customFishItems, "base");
 
   const scored = RECIPES.map(r => {
-    const costPerCook = r.ings.reduce((s, { id, qty }) => s + (cheapest0[id] || 0) * qty, 0);
-    const grossPerCook = r.servings * (starQuality ? r.starSellPrice : r.sellPrice);
-    return { ...r, costPerCook, grossPerCook, netPerCook: grossPerCook - costPerCook };
-  }).filter(r => r.netPerCook > 0).sort((a, b) => b.netPerCook - a.netPerCook);
+    const starCost = r.ings.reduce((s,{id,qty}) => s+(starCheapest0[id]||0)*qty, 0);
+    const baseCost = r.ings.reduce((s,{id,qty}) => s+(baseCheapest0[id]||0)*qty, 0);
+    return {
+      ...r,
+      starNetPerCook: r.servings * r.starSellPrice - starCost,
+      baseNetPerCook: r.servings * r.sellPrice    - baseCost,
+    };
+  });
 
   const plan = [];
-  for (const recipe of scored) {
-    const pool = buildPool(remaining, extraItems);
-    const cooks = recipe.ings.reduce((min, { id, qty }) =>
-      Math.min(min, Math.floor((pool[id] || 0) / qty)), Infinity);
-    if (cooks > 0 && cooks !== Infinity) {
-      deductIngredients(recipe, cooks, remaining, extraItems);
-      plan.push({
-        name: recipe.name, cooks, servings: recipe.servings,
-        totalDishes: cooks * recipe.servings,
-        sellPrice: starQuality ? recipe.starSellPrice : recipe.sellPrice,
-        grossRevenue:   Math.round(cooks * recipe.grossPerCook),
-        ingredientCost: Math.round(cooks * recipe.costPerCook),
-        netProfit:      Math.round(cooks * recipe.netPerCook),
-      });
-    }
+
+  // ── Pass 1: Star mode ──
+  const starScored = scored.filter(r => r.starNetPerCook > 0)
+    .sort((a,b) => b.starNetPerCook - a.starNetPerCook);
+
+  for (const recipe of starScored) {
+    // Only run in star mode if there's at least one star ingredient available for this recipe
+    const hasAnyStar = recipe.ings.some(({id}) =>
+      [...ALL_ITEMS, ...customFishItems].some(item =>
+        item.provides.includes(id) && getStar(remaining, item.id) > 0));
+    if (!hasAnyStar) continue;
+
+    const combined = buildPool(remaining, customFishItems, "combined");
+    const cooks = recipe.ings.reduce((min,{id,qty}) =>
+      Math.min(min, Math.floor((combined[id]||0)/qty)), Infinity);
+    if (!isFinite(cooks) || cooks <= 0) continue;
+
+    const ingCost = deduct(recipe, cooks, remaining, costs, customFishItems, "star");
+    plan.push({
+      name: recipe.name, mode: "star", cooks,
+      servings: recipe.servings,
+      totalDishes: cooks * recipe.servings,
+      sellPrice: recipe.starSellPrice,
+      grossRevenue:   Math.round(cooks * recipe.servings * recipe.starSellPrice),
+      ingredientCost: Math.round(ingCost),
+      netProfit:      Math.round(cooks * recipe.servings * recipe.starSellPrice - ingCost),
+    });
   }
-  plan.sort((a, b) => b.netProfit - a.netProfit);
-  const leftover = Object.entries(remaining)
-    .filter(([, q]) => q > 0)
-    .map(([id, qty]) => ({ id, qty, name: ING_MAP[id]?.name || lbl(id) }));
+
+  // ── Pass 2: Base mode ──
+  const baseScored = scored.filter(r => r.baseNetPerCook > 0)
+    .sort((a,b) => b.baseNetPerCook - a.baseNetPerCook);
+
+  for (const recipe of baseScored) {
+    const basePool = buildPool(remaining, customFishItems, "base");
+    const cooks = recipe.ings.reduce((min,{id,qty}) =>
+      Math.min(min, Math.floor((basePool[id]||0)/qty)), Infinity);
+    if (!isFinite(cooks) || cooks <= 0) continue;
+
+    const ingCost = deduct(recipe, cooks, remaining, costs, customFishItems, "base");
+    plan.push({
+      name: recipe.name, mode: "base", cooks,
+      servings: recipe.servings,
+      totalDishes: cooks * recipe.servings,
+      sellPrice: recipe.sellPrice,
+      grossRevenue:   Math.round(cooks * recipe.servings * recipe.sellPrice),
+      ingredientCost: Math.round(ingCost),
+      netProfit:      Math.round(cooks * recipe.servings * recipe.sellPrice - ingCost),
+    });
+  }
+
+  // Group by recipe name for display
+  const grouped = {};
+  plan.forEach(p => {
+    if (!grouped[p.name]) grouped[p.name] = {name: p.name, star: null, base: null};
+    grouped[p.name][p.mode] = p;
+  });
+  const groupedArray = Object.values(grouped).map(g => ({
+    ...g,
+    totalNet:    (g.star?.netProfit||0)    + (g.base?.netProfit||0),
+    totalGross:  (g.star?.grossRevenue||0) + (g.base?.grossRevenue||0),
+    totalCost:   (g.star?.ingredientCost||0)+ (g.base?.ingredientCost||0),
+    totalDishes: (g.star?.totalDishes||0)  + (g.base?.totalDishes||0),
+  })).sort((a,b) => b.totalNet - a.totalNet);
+
+  // Leftover
+  const leftover = [];
+  Object.entries(remaining).forEach(([id, {base, star}]) => {
+    if ((base||0) > 0 || (star||0) > 0)
+      leftover.push({ id, base: base||0, star: star||0, name: ING_MAP[id]?.name || lbl(id) });
+  });
+
   return {
-    plan, leftover,
-    totalGross:  plan.reduce((s, p) => s + p.grossRevenue, 0),
-    totalCost:   plan.reduce((s, p) => s + p.ingredientCost, 0),
-    totalNet:    plan.reduce((s, p) => s + p.netProfit, 0),
-    totalDishes: plan.reduce((s, p) => s + p.totalDishes, 0),
+    grouped: groupedArray, leftover,
+    totalNet:    plan.reduce((s,p) => s+p.netProfit, 0),
+    totalGross:  plan.reduce((s,p) => s+p.grossRevenue, 0),
+    totalCost:   plan.reduce((s,p) => s+p.ingredientCost, 0),
+    totalDishes: plan.reduce((s,p) => s+p.totalDishes, 0),
+    starDishes:  plan.filter(p=>p.mode==="star").reduce((s,p)=>s+p.totalDishes,0),
+    baseDishes:  plan.filter(p=>p.mode==="base").reduce((s,p)=>s+p.totalDishes,0),
   };
 }
 
 /* ══════════════════════════════════════════════════════
-   INGREDIENT CHIP — with direct number input
+   INGREDIENT CHIP — dual base + star counters
 ══════════════════════════════════════════════════════ */
-function IngChip({ name, qty, onQtyChange }) {
-  const active = qty > 0;
+function IngChip({ name, baseQty, starQty, onBaseChange, onStarChange }) {
+  const active = baseQty > 0 || starQty > 0;
+  const stop = e => e.stopPropagation();
+
   return (
     <div className={`ing-chip ${active ? "active" : ""}`}>
-      <span className="ing-chip-name" onClick={() => onQtyChange(active ? 0 : 1)}>{name}</span>
-      {active ? (
-        <>
-          <button className="qty-btn" onClick={e => { e.stopPropagation(); onQtyChange(Math.max(0, qty - 1)); }}>−</button>
-          <input type="number" min="0" value={qty} className="qty-direct"
-            onChange={e => onQtyChange(Math.max(0, parseInt(e.target.value) || 0))}
-            onClick={e => e.stopPropagation()} />
-          <button className="qty-btn" onClick={e => { e.stopPropagation(); onQtyChange(qty + 1); }}>+</button>
-        </>
-      ) : (
-        <button className="qty-add" onClick={e => { e.stopPropagation(); onQtyChange(1); }}>+</button>
+      <span className="ing-chip-name"
+        onClick={() => active ? (onBaseChange(0), onStarChange(0)) : onBaseChange(1)}>
+        {name}
+      </span>
+
+      {active && <>
+        {/* Base counter */}
+        <button className="qty-btn" onClick={e=>{stop(e);onBaseChange(Math.max(0,baseQty-1));}}>−</button>
+        <input type="number" min="0" value={baseQty} className="qty-direct"
+          onChange={e=>onBaseChange(Math.max(0,parseInt(e.target.value)||0))}
+          onClick={stop} />
+        <button className="qty-btn" onClick={e=>{stop(e);onBaseChange(baseQty+1);}}>+</button>
+
+        {/* Separator + star counter */}
+        <span className="qty-sep" />
+        <span className="qty-star-label">⭐</span>
+        <button className="qty-btn" onClick={e=>{stop(e);onStarChange(Math.max(0,starQty-1));}}>−</button>
+        <input type="number" min="0" value={starQty} className="qty-direct"
+          onChange={e=>onStarChange(Math.max(0,parseInt(e.target.value)||0))}
+          onClick={stop} />
+        <button className="qty-btn" onClick={e=>{stop(e);onStarChange(starQty+1);}}>+</button>
+      </>}
+
+      {!active && (
+        <button className="qty-add" onClick={e=>{stop(e);onBaseChange(1);}}>+</button>
       )}
     </div>
   );
@@ -424,44 +546,43 @@ function IngChip({ name, qty, onQtyChange }) {
 /* ══════════════════════════════════════════════════════
    CUSTOM FISH PANEL
 ══════════════════════════════════════════════════════ */
-function CustomFishPanel({ customFish, onAdd, onRemove, quantities, setQty }) {
-  const [showForm, setShowForm] = useState(false);
-  const [nm, setNm] = useState("");
-  const [bp, setBp] = useState("");
-  const [sp, setSp] = useState("");
+function CustomFishPanel({ customFish, onAdd, onRemove, quantities, onBaseChange, onStarChange }) {
+  const [show, setShow]   = useState(false);
+  const [nm,   setNm]     = useState("");
+  const [bp,   setBp]     = useState("");
+  const [sp,   setSp]     = useState("");
 
   const handleAdd = () => {
     if (!nm.trim()) return;
-    onAdd({ name: nm.trim(), sellPrice: parseInt(bp) || 0, starPrice: parseInt(sp) || 0 });
-    setNm(""); setBp(""); setSp(""); setShowForm(false);
+    onAdd({ name: nm.trim(), sellPrice: parseInt(bp)||0, starPrice: parseInt(sp)||0 });
+    setNm(""); setBp(""); setSp(""); setShow(false);
   };
 
   return (
-    <div style={{ marginTop:"6px" }}>
-      <div style={{ display:"flex", flexWrap:"wrap", gap:"5px" }}>
+    <div style={{marginTop:"6px"}}>
+      <div style={{display:"flex",flexWrap:"wrap",gap:"5px"}}>
         {customFish.map(f => (
-          <div key={f.id} style={{ display:"inline-flex", alignItems:"center", gap:"2px" }}>
-            <IngChip name={f.name} qty={quantities[f.id] || 0} onQtyChange={qty => setQty(f.id, qty)} />
-            <button className="remove-x" title="Remove" onClick={() => onRemove(f.id)}>×</button>
+          <div key={f.id} style={{display:"inline-flex",alignItems:"center",gap:"2px"}}>
+            <IngChip name={f.name}
+              baseQty={quantities[f.id]?.base||0} starQty={quantities[f.id]?.star||0}
+              onBaseChange={q => onBaseChange(f.id, q)}
+              onStarChange={q => onStarChange(f.id, q)} />
+            <button className="remove-x" onClick={() => onRemove(f.id)}>×</button>
           </div>
         ))}
       </div>
-
-      {!showForm ? (
-        <button className="btn-add-custom" onClick={() => setShowForm(true)}>
-          + Add fish
-        </button>
+      {!show ? (
+        <button className="btn-add-custom" onClick={() => setShow(true)}>+ Add fish</button>
       ) : (
         <div className="custom-fish-form">
           <input className="custom-form-input name" placeholder="Fish name" value={nm}
-            onChange={e => setNm(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && handleAdd()} />
+            onChange={e=>setNm(e.target.value)} onKeyDown={e=>e.key==="Enter"&&handleAdd()} />
           <input className="custom-form-input price" type="number" placeholder="Base g" value={bp}
-            onChange={e => setBp(e.target.value)} />
+            onChange={e=>setBp(e.target.value)} />
           <input className="custom-form-input price" type="number" placeholder="⭐ g" value={sp}
-            onChange={e => setSp(e.target.value)} />
+            onChange={e=>setSp(e.target.value)} />
           <button className="btn-green" onClick={handleAdd}>Add</button>
-          <button className="btn-ghost" onClick={() => { setShowForm(false); setNm(""); setBp(""); setSp(""); }}>Cancel</button>
+          <button className="btn-ghost" onClick={()=>{setShow(false);setNm("");setBp("");setSp("");}}>Cancel</button>
         </div>
       )}
     </div>
@@ -472,199 +593,214 @@ function CustomFishPanel({ customFish, onAdd, onRemove, quantities, setQty }) {
    APP
 ══════════════════════════════════════════════════════ */
 export default function App() {
-  const [quantities,   setQuantities]   = useState({});
-  const [costs,        setCosts]        = useState(
+  // quantities: { [id]: { base: number, star: number } }
+  const [quantities,  setQuantities]  = useState({});
+  const [costs,       setCosts]       = useState(
     Object.fromEntries([
-      ...ALL_ITEMS.map(i => [i.id, i.sellPrice]),
-      ...ALL_ITEMS.map(i => [i.id + "_star", i.starPrice]),
+      ...ALL_ITEMS.map(i => [i.id,          i.sellPrice]),
+      ...ALL_ITEMS.map(i => [i.id+"_star",  i.starPrice]),
     ])
   );
-  const [customFish,   setCustomFish]   = useState([]); // [{id,name,sellPrice,starPrice,provides}]
-  const [tab,          setTab]          = useState("optimize");
-  const [starQuality,  setStarQuality]  = useState(false);
-  const [showCosts,    setShowCosts]    = useState(false);
-  const [filter,       setFilter]       = useState("all");
-  const [search,       setSearch]       = useState("");
-  const [sortBy,       setSortBy]       = useState("net");
+  const [customFish,  setCustomFish]  = useState([]);
+  const [tab,         setTab]         = useState("optimize");
+  const [showCosts,   setShowCosts]   = useState(false);
+  const [filter,      setFilter]      = useState("all");
+  const [search,      setSearch]      = useState("");
+  const [sortBy,      setSortBy]      = useState("net");
 
-  const setQty  = (id, qty) => setQuantities(p => ({ ...p, [id]: Math.max(0, qty) }));
-  const setCost = (id, v)   => setCosts(p => ({ ...p, [id]: Math.max(0, v) }));
+  // Quantity helpers
+  const setBase = (id, qty) => setQuantities(p => ({
+    ...p, [id]: { star: p[id]?.star||0, base: Math.max(0,qty) }
+  }));
+  const setStar = (id, qty) => setQuantities(p => ({
+    ...p, [id]: { base: p[id]?.base||0, star: Math.max(0,qty) }
+  }));
+  const setCost = (id, v) => setCosts(p => ({...p, [id]: Math.max(0,v)}));
 
-  const hasAny = Object.values(quantities).some(q => q > 0);
-  const activeIngs = useMemo(() =>
-    [...ALL_ITEMS, ...customFish].filter(i => (quantities[i.id] || 0) > 0),
-  [quantities, customFish]);
-
-  // Custom fish as "items" for pool building
   const customFishItems = useMemo(() =>
-    customFish.map(f => ({ ...f, provides: ["any_fish"] })),
-  [customFish]);
+    customFish.map(f => ({...f, provides:["any_fish"]})), [customFish]);
 
-  // Shared pool and cost maps
-  const avail        = useMemo(() => buildPool(quantities, customFishItems), [quantities, customFishItems]);
-  const cheapestCost = useMemo(() => buildCheapest(quantities, costs, starQuality, customFishItems), [quantities, costs, starQuality, customFishItems]);
+  const hasAny = Object.values(quantities).some(v => (v?.base||0)>0 || (v?.star||0)>0);
+
+  const totalBase = useMemo(() =>
+    Object.values(quantities).reduce((s,v)=>s+(v?.base||0),0), [quantities]);
+  const totalStar = useMemo(() =>
+    Object.values(quantities).reduce((s,v)=>s+(v?.star||0),0), [quantities]);
+
+  const activeIngs = useMemo(() =>
+    [...ALL_ITEMS, ...customFishItems].filter(i =>
+      (quantities[i.id]?.base||0)>0 || (quantities[i.id]?.star||0)>0),
+  [quantities, customFishItems]);
+
+  // Pools for browse
+  const avail      = useMemo(() => buildPool(quantities, customFishItems, "combined"), [quantities, customFishItems]);
+  const baseAvail  = useMemo(() => buildPool(quantities, customFishItems, "base"),     [quantities, customFishItems]);
+  const starAvail  = useMemo(() => buildPool(quantities, customFishItems, "star"),     [quantities, customFishItems]);
+
+  const starCheapest = useMemo(() => buildCheapest(quantities, costs, customFishItems, "star"), [quantities, costs, customFishItems]);
+  const baseCheapest = useMemo(() => buildCheapest(quantities, costs, customFishItems, "base"), [quantities, costs, customFishItems]);
 
   // Optimizer
   const optResult = useMemo(() =>
-    hasAny ? runOptimizer(quantities, costs, starQuality, customFishItems) : null,
-  [quantities, costs, starQuality, customFishItems]);
+    hasAny ? runOptimizer(quantities, costs, customFishItems) : null,
+  [quantities, costs, customFishItems]);
 
-  // Browse recipe statuses
+  // Browse statuses
   const withStatus = useMemo(() => RECIPES.map(r => {
-    const cooks = r.ings.reduce((min, { id, qty }) =>
-      Math.min(min, Math.floor((avail[id] || 0) / qty)), Infinity);
-    const cookCount = cooks === Infinity ? 0 : cooks;
-    const ingStatus = r.ings.map(({ id, qty }) => {
-      const have = avail[id] || 0;
-      return { id, qty, have, ok: Math.floor(have / qty) >= 1 };
-    });
-    const missing = ingStatus.filter(s => s.have === 0);
-    const partial = ingStatus.filter(s => s.have > 0 && !s.ok);
-    const costPerCook = r.ings.reduce((s, { id, qty }) => s + (cheapestCost[id] || 0) * qty, 0);
-    const grossPerCook = r.servings * (starQuality ? r.starSellPrice : r.sellPrice);
-    const netPerCook = grossPerCook - costPerCook;
-    return {
-      ...r, cooks: cookCount, ingStatus, missing, partial,
-      costPerCook, netPerCook,
-      totalNet: Math.round(cookCount * netPerCook),
-      totalGross: Math.round(cookCount * grossPerCook),
-    };
-  }), [avail, cheapestCost, starQuality]);
+    const totalCooks = r.ings.reduce((min,{id,qty}) =>
+      Math.min(min, Math.floor((avail[id]||0)/qty)), Infinity);
+    const cooks = isFinite(totalCooks) ? totalCooks : 0;
 
-  const cookableCount = withStatus.filter(r => r.cooks >= 1).length;
-  const almostCount   = withStatus.filter(r => r.cooks === 0
-    && r.missing.length + r.partial.length <= 2
-    && r.ings.some(i => (avail[i.id] || 0) > 0)).length;
+    const ingStatus = r.ings.map(({id,qty}) => {
+      const have = avail[id]||0;
+      return {id, qty, have, ok: Math.floor(have/qty)>=1};
+    });
+    const missing = ingStatus.filter(s=>s.have===0);
+    const partial = ingStatus.filter(s=>s.have>0&&!s.ok);
+
+    const starCostPerCook = r.ings.reduce((s,{id,qty})=>s+(starCheapest[id]||0)*qty,0);
+    const baseCostPerCook = r.ings.reduce((s,{id,qty})=>s+(baseCheapest[id]||0)*qty,0);
+    const totalStarNet = cooks>0 ? Math.round(cooks*(r.servings*r.starSellPrice-starCostPerCook)) : 0;
+    const totalBaseNet = cooks>0 ? Math.round(cooks*(r.servings*r.sellPrice-baseCostPerCook)) : 0;
+
+    return { ...r, cooks, ingStatus, missing, partial, totalStarNet, totalBaseNet };
+  }), [avail, starCheapest, baseCheapest]);
+
+  const cookableCount = withStatus.filter(r=>r.cooks>=1).length;
+  const almostCount   = withStatus.filter(r=>r.cooks===0
+    && r.missing.length+r.partial.length<=2
+    && r.ings.some(i=>(avail[i.id]||0)>0)).length;
 
   const displayed = useMemo(() => {
     let list = withStatus;
-    if (filter === "cookable") list = list.filter(r => r.cooks >= 1);
-    else if (filter === "almost") list = list.filter(r =>
-      r.cooks === 0 && r.missing.length + r.partial.length <= 2 && r.ings.some(i => (avail[i.id] || 0) > 0));
+    if (filter==="cookable") list=list.filter(r=>r.cooks>=1);
+    else if (filter==="almost") list=list.filter(r=>
+      r.cooks===0&&r.missing.length+r.partial.length<=2&&r.ings.some(i=>(avail[i.id]||0)>0));
     if (search.trim()) {
-      const q = search.toLowerCase();
-      list = list.filter(r => r.name.toLowerCase().includes(q) ||
-        r.ings.some(i => lbl(i.id).toLowerCase().includes(q)));
+      const q=search.toLowerCase();
+      list=list.filter(r=>r.name.toLowerCase().includes(q)||
+        r.ings.some(i=>lbl(i.id).toLowerCase().includes(q)));
     }
-    return [...list].sort((a, b) => {
-      const ac = a.cooks >= 1, bc = b.cooks >= 1;
-      if (ac !== bc) return ac ? -1 : 1;
-      if (sortBy === "net")   return b.totalNet - a.totalNet;
-      if (sortBy === "gross") return b.totalGross - a.totalGross;
-      if (sortBy === "price") return (b.sellPrice || 0) - (a.sellPrice || 0);
-      if (sortBy === "cooks") return b.cooks - a.cooks;
-      if (sortBy === "alpha") return a.name.localeCompare(b.name);
+    return [...list].sort((a,b)=>{
+      const ac=a.cooks>=1,bc=b.cooks>=1;
+      if(ac!==bc) return ac?-1:1;
+      if(sortBy==="net")   return b.totalStarNet-a.totalStarNet;
+      if(sortBy==="gross") return b.cooks*b.servings*b.starSellPrice-a.cooks*a.servings*a.starSellPrice;
+      if(sortBy==="price") return b.starSellPrice-a.starSellPrice;
+      if(sortBy==="cooks") return b.cooks-a.cooks;
+      if(sortBy==="alpha") return a.name.localeCompare(b.name);
       return 0;
     });
-  }, [withStatus, filter, search, sortBy, avail]);
+  }, [withStatus,filter,search,sortBy,avail]);
 
   // Custom fish management
-  let fishCounter = 0;
-  const addCustomFish = ({ name, sellPrice, starPrice }) => {
+  const addCustomFish = ({name, sellPrice, starPrice}) => {
     const id = `custom_fish_${Date.now()}`;
-    setCustomFish(p => [...p, { id, name, sellPrice, starPrice, provides: ["any_fish"] }]);
-    setCosts(p => ({ ...p, [id]: sellPrice, [id + "_star"]: starPrice }));
-    setQty(id, 1);
+    setCustomFish(p=>[...p,{id,name,sellPrice,starPrice}]);
+    setCosts(p=>({...p,[id]:sellPrice,[id+"_star"]:starPrice}));
+    setBase(id, 1);
   };
-  const removeCustomFish = (id) => {
-    setCustomFish(p => p.filter(f => f.id !== id));
-    setQuantities(p => { const n = {...p}; delete n[id]; return n; });
+  const removeCustomFish = id => {
+    setCustomFish(p=>p.filter(f=>f.id!==id));
+    setQuantities(p=>{const n={...p};delete n[id];return n;});
   };
 
-  const g = n => n.toLocaleString() + "g";
   const clearAll = () => { setQuantities({}); setCustomFish([]); };
+  const g = n => n.toLocaleString()+"g";
 
   return (
-    <div style={{ fontFamily:"'Crimson Text',Georgia,serif", background:"#EDE0C8", minHeight:"100vh", padding:"16px" }}>
+    <div style={{fontFamily:"'Crimson Text',Georgia,serif",background:"#EDE0C8",minHeight:"100vh",padding:"16px"}}>
       <style>{STYLE}</style>
 
-      <div style={{ textAlign:"center", marginBottom:"14px" }}>
-        <h1 style={{ fontFamily:"'Cinzel',serif", fontSize:"22px", color:"#2A4D10", margin:0 }}>
+      <div style={{textAlign:"center",marginBottom:"14px"}}>
+        <h1 style={{fontFamily:"'Cinzel',serif",fontSize:"22px",color:"#2A4D10",margin:0}}>
           🍳 Palia Cooking Profit Helper
         </h1>
-        <p style={{ color:"#6B4A00", fontSize:"13px", margin:"3px 0 0" }}>
-          Enter your ingredients · get a cooking plan that maximises net gold
+        <p style={{color:"#6B4A00",fontSize:"13px",margin:"3px 0 0"}}>
+          Enter base &amp; ⭐ star quantities · optimizer allocates star mode first for max gold
         </p>
       </div>
 
-      <div className="layout" style={{ display:"flex", gap:"14px", maxWidth:"1200px", margin:"0 auto" }}>
+      <div className="layout" style={{display:"flex",gap:"14px",maxWidth:"1200px",margin:"0 auto"}}>
 
         {/* ══ LEFT ══ */}
-        <div style={{ flex:"0 0 315px", minWidth:"255px", display:"flex", flexDirection:"column", gap:"10px" }}>
+        <div style={{flex:"0 0 330px",minWidth:"270px",display:"flex",flexDirection:"column",gap:"10px"}}>
 
-          {/* Ingredient panel */}
           <div className="panel-box">
-            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"8px" }}>
-              <span style={{ fontFamily:"'Cinzel',serif", fontSize:"13.5px", color:"#2A4D10", fontWeight:600 }}>My Ingredients</span>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"6px"}}>
+              <span style={{fontFamily:"'Cinzel',serif",fontSize:"13.5px",color:"#2A4D10",fontWeight:600}}>My Ingredients</span>
               {hasAny && <button onClick={clearAll}
-                style={{ background:"none", border:"none", color:"#8B4000", cursor:"pointer", fontSize:"12px", textDecoration:"underline", fontFamily:"inherit" }}>
+                style={{background:"none",border:"none",color:"#8B4000",cursor:"pointer",fontSize:"12px",textDecoration:"underline",fontFamily:"inherit"}}>
                 Clear all
               </button>}
             </div>
-            <div style={{ fontSize:"11px", color:"#8B6914", marginBottom:"8px" }}>
-              Click to add · type or use −/+ to set quantity
+            <div style={{fontSize:"10.5px",color:"#8B6914",marginBottom:"8px",display:"flex",gap:"12px",flexWrap:"wrap"}}>
+              <span>Click to add</span>
+              <span>Left counter = base qty</span>
+              <span>⭐ Right counter = star qty</span>
             </div>
             <div className="scroll">
               {INGREDIENT_CATEGORIES.map(cat => (
                 <div key={cat.name}>
                   <div className="cat-label">{cat.icon} {cat.name}</div>
-                  <div style={{ display:"flex", flexWrap:"wrap", gap:"5px", marginBottom:"4px" }}>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:"5px",marginBottom:"4px"}}>
                     {cat.items.map(item => (
                       <IngChip key={item.id} name={item.name}
-                        qty={quantities[item.id] || 0}
-                        onQtyChange={qty => setQty(item.id, qty)} />
+                        baseQty={quantities[item.id]?.base||0}
+                        starQty={quantities[item.id]?.star||0}
+                        onBaseChange={q=>setBase(item.id,q)}
+                        onStarChange={q=>setStar(item.id,q)} />
                     ))}
                   </div>
-                  {/* Custom fish section under Fish category */}
-                  {cat.name === "Fish" && (
+                  {cat.name==="Fish" && (
                     <CustomFishPanel
-                      customFish={customFish}
-                      onAdd={addCustomFish}
-                      onRemove={removeCustomFish}
+                      customFish={customFish} onAdd={addCustomFish} onRemove={removeCustomFish}
                       quantities={quantities}
-                      setQty={setQty} />
+                      onBaseChange={setBase} onStarChange={setStar} />
                   )}
                 </div>
               ))}
             </div>
             {hasAny && (
-              <div style={{ marginTop:"8px", padding:"7px", background:"#EAF3D6", borderRadius:"7px",
-                fontSize:"12px", color:"#2A4D10", textAlign:"center" }}>
-                <strong>{Object.values(quantities).reduce((s,q)=>s+q,0)}</strong> items ·{" "}
-                <strong>{cookableCount}</strong> recipe{cookableCount!==1?"s":""} ready
+              <div style={{marginTop:"8px",padding:"7px",background:"#EAF3D6",borderRadius:"7px",
+                fontSize:"12px",color:"#2A4D10",textAlign:"center"}}>
+                {totalBase > 0 && <span><strong>{totalBase}</strong> base</span>}
+                {totalBase > 0 && totalStar > 0 && <span> · </span>}
+                {totalStar > 0 && <span><strong>{totalStar}</strong> ⭐ star</span>}
+                <span> · <strong>{cookableCount}</strong> recipe{cookableCount!==1?"s":""} ready</span>
               </div>
             )}
           </div>
 
-          {/* Ingredient costs */}
+          {/* Cost overrides */}
           <div className="panel-box">
-            <button className="section-toggle" onClick={() => setShowCosts(v => !v)}>
+            <button className="section-toggle" onClick={()=>setShowCosts(v=>!v)}>
               <span>{showCosts?"▼":"▶"}</span>
               <span>Override Ingredient Costs</span>
-              <span style={{ fontSize:"10px", color:"#8B6914", fontFamily:"'Crimson Text',serif", fontWeight:400, marginLeft:"auto" }}>
+              <span style={{fontSize:"10px",color:"#8B6914",fontFamily:"'Crimson Text',serif",fontWeight:400,marginLeft:"auto"}}>
                 {activeIngs.length} active
               </span>
             </button>
             {showCosts && (
               <>
-                <div style={{ fontSize:"10.5px", color:"#8B6914", margin:"6px 0 8px", lineHeight:1.4 }}>
-                  Prices are pre-loaded from your spreadsheet. Adjust here if anything changes.
+                <div style={{fontSize:"10px",color:"#8B6914",margin:"6px 0 7px",lineHeight:1.4}}>
+                  Pre-loaded from your spreadsheet. Adjust if anything changes in-game.
                 </div>
-                {activeIngs.length === 0
-                  ? <div style={{ fontSize:"12px", color:"#9B7B2E", padding:"6px 0" }}>No ingredients selected.</div>
-                  : <div style={{ maxHeight:"220px", overflowY:"auto" }}>
-                      {activeIngs.map(item => (
+                {activeIngs.length===0
+                  ? <div style={{fontSize:"12px",color:"#9B7B2E",padding:"4px 0"}}>No ingredients selected.</div>
+                  : <div style={{maxHeight:"200px",overflowY:"auto"}}>
+                      {activeIngs.map(item=>(
                         <div key={item.id} className="cost-row">
-                          <span style={{ fontSize:"12px" }}>{item.name}</span>
-                          <div style={{ display:"flex", gap:"5px", alignItems:"center" }}>
+                          <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{item.name}</span>
+                          <div style={{display:"flex",gap:4,alignItems:"center",flexShrink:0}}>
                             <input type="number" min="0" className="cost-input"
-                              value={costs[item.id] ?? item.sellPrice}
-                              onChange={e => setCost(item.id, parseInt(e.target.value)||0)} />
-                            <span style={{ fontSize:"10px", color:"#8B6914" }}>base</span>
+                              value={costs[item.id]??item.sellPrice}
+                              onChange={e=>setCost(item.id,parseInt(e.target.value)||0)} />
+                            <span style={{fontSize:"10px",color:"#8B6914"}}>base</span>
                             <input type="number" min="0" className="cost-input"
-                              value={costs[item.id+"_star"] ?? item.starPrice}
-                              onChange={e => setCost(item.id+"_star", parseInt(e.target.value)||0)} />
-                            <span style={{ fontSize:"10px", color:"#8B6914" }}>⭐</span>
+                              value={costs[item.id+"_star"]??item.starPrice}
+                              onChange={e=>setCost(item.id+"_star",parseInt(e.target.value)||0)} />
+                            <span style={{fontSize:"10px",color:"#C8922A"}}>⭐</span>
                           </div>
                         </div>
                       ))}
@@ -672,52 +808,45 @@ export default function App() {
               </>
             )}
           </div>
-
-          {/* Star quality */}
-          <div className="panel-box" style={{ padding:"10px 13px" }}>
-            <label className="star-toggle">
-              <input type="checkbox" checked={starQuality} onChange={e => setStarQuality(e.target.checked)} />
-              <span>⭐ Use star quality prices</span>
-            </label>
-            <div style={{ fontSize:"10.5px", color:"#8B6914", marginTop:"4px", lineHeight:1.4 }}>
-              Uses your actual star sell prices (not a 1.5× estimate) and star ingredient costs.
-            </div>
-          </div>
         </div>
 
         {/* ══ RIGHT ══ */}
-        <div style={{ flex:1, minWidth:"260px" }}>
-          <div style={{ borderBottom:"2px solid #D4B896", marginBottom:"12px", display:"flex" }}>
-            <button className={`tab-btn ${tab==="optimize"?"active":""}`} onClick={() => setTab("optimize")}>📊 Optimize</button>
-            <button className={`tab-btn ${tab==="browse"?"active":""}`} onClick={() => setTab("browse")}>📖 Browse All</button>
+        <div style={{flex:1,minWidth:"260px"}}>
+          <div style={{borderBottom:"2px solid #D4B896",marginBottom:"12px",display:"flex"}}>
+            <button className={`tab-btn ${tab==="optimize"?"active":""}`} onClick={()=>setTab("optimize")}>📊 Optimize</button>
+            <button className={`tab-btn ${tab==="browse"?"active":""}`} onClick={()=>setTab("browse")}>📖 Browse All</button>
           </div>
 
-          {/* ── OPTIMIZE ── */}
-          {tab === "optimize" && (
+          {/* ── OPTIMIZE TAB ── */}
+          {tab==="optimize" && (
             <div>
               {!hasAny ? (
-                <div style={{ textAlign:"center", padding:"60px 20px" }}>
-                  <div style={{ fontSize:"40px", marginBottom:"12px" }}>🧺</div>
-                  <div style={{ fontFamily:"'Cinzel',serif", fontSize:"16px", color:"#2A4D10", marginBottom:"6px" }}>Add your ingredients</div>
-                  <div style={{ fontSize:"13.5px", color:"#8B6914" }}>
-                    Select ingredients on the left and the optimizer will build the best cooking plan to maximise your net gold.
+                <div style={{textAlign:"center",padding:"60px 20px"}}>
+                  <div style={{fontSize:"40px",marginBottom:"12px"}}>🧺</div>
+                  <div style={{fontFamily:"'Cinzel',serif",fontSize:"16px",color:"#2A4D10",marginBottom:"8px"}}>Add your ingredients</div>
+                  <div style={{fontSize:"13px",color:"#8B6914",lineHeight:1.6}}>
+                    Use the <strong>left counter</strong> for base quantity and the <strong>⭐ right counter</strong> for star quality quantity.<br/>
+                    The optimizer will run star mode cooks first, then use leftover base ingredients.
                   </div>
                 </div>
-              ) : !optResult || optResult.plan.length === 0 ? (
-                <div style={{ textAlign:"center", padding:"50px 20px" }}>
-                  <div style={{ fontSize:"36px", marginBottom:"10px" }}>😔</div>
-                  <div style={{ fontFamily:"'Cinzel',serif", fontSize:"15px", color:"#8B4000", marginBottom:"6px" }}>No profitable recipes available</div>
-                  <div style={{ fontSize:"13px", color:"#8B6914" }}>
-                    Cooking would cost more than selling raw with current prices. Try adjusting ingredient costs or adding more ingredients.
+              ) : !optResult || optResult.grouped.length===0 ? (
+                <div style={{textAlign:"center",padding:"50px 20px"}}>
+                  <div style={{fontSize:"36px",marginBottom:"10px"}}>😔</div>
+                  <div style={{fontFamily:"'Cinzel',serif",fontSize:"15px",color:"#8B4000",marginBottom:"6px"}}>No profitable recipes available</div>
+                  <div style={{fontSize:"13px",color:"#8B6914"}}>
+                    Cooking would cost more than selling raw. Try adjusting ingredient costs or adding more ingredients.
                   </div>
                 </div>
               ) : (
                 <div className="scroll">
+                  {/* Summary */}
                   <div className="summary-bar">
-                    <div style={{ fontFamily:"'Cinzel',serif", fontSize:"13px", fontWeight:700, marginRight:"4px" }}>Cooking Plan</div>
-                    <div style={{ flex:1 }} />
+                    <div style={{fontFamily:"'Cinzel',serif",fontSize:"12px",fontWeight:700,marginRight:"4px"}}>
+                      Cooking Plan
+                    </div>
+                    <div style={{flex:1}}/>
                     <div className="summary-stat">
-                      <span className="summary-val" style={{ color:"#A8E890" }}>+{g(optResult.totalNet)}</span>
+                      <span className="summary-val" style={{color:"#A8E890"}}>+{g(optResult.totalNet)}</span>
                       <span className="summary-lbl">Net Profit</span>
                     </div>
                     <div className="summary-stat">
@@ -725,118 +854,167 @@ export default function App() {
                       <span className="summary-lbl">Gross Revenue</span>
                     </div>
                     <div className="summary-stat">
-                      <span className="summary-val" style={{ color:"#FFB09A" }}>−{g(optResult.totalCost)}</span>
+                      <span className="summary-val" style={{color:"#FFB09A"}}>−{g(optResult.totalCost)}</span>
                       <span className="summary-lbl">Ingredient Cost</span>
                     </div>
                     <div className="summary-stat">
-                      <span className="summary-val">{optResult.totalDishes}</span>
-                      <span className="summary-lbl">Total Dishes</span>
+                      <span className="summary-val">{optResult.starDishes>0?`⭐${optResult.starDishes}`:""}{optResult.baseDishes>0?` 📦${optResult.baseDishes}`:""}</span>
+                      <span className="summary-lbl">Dishes ({optResult.totalDishes} total)</span>
                     </div>
                   </div>
 
-                  {optResult.plan.map((p, i) => (
-                    <div key={p.name} className="plan-card">
-                      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:"10px" }}>
-                        <div style={{ flex:1 }}>
-                          <div style={{ fontFamily:"'Cinzel',serif", fontSize:"14.5px", color:"#1A3A08", fontWeight:700, marginBottom:"3px" }}>
-                            #{i+1} &nbsp;{p.name}
+                  {/* Plan groups */}
+                  {optResult.grouped.map((group, i) => (
+                    <div key={group.name}
+                      className={`plan-group ${!group.star && group.base ? "base-only" : ""}`}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:"10px"}}>
+                        <div style={{flex:1}}>
+                          <div style={{fontFamily:"'Cinzel',serif",fontSize:"14.5px",color:"#1A3A08",fontWeight:700,marginBottom:"4px"}}>
+                            #{i+1} &nbsp;{group.name}
                           </div>
-                          <div style={{ fontSize:"12px", color:"#5A7A40", marginBottom:"5px" }}>
-                            🍳 Cook <strong>{p.cooks}×</strong> → <strong>{p.totalDishes}</strong> dish{p.totalDishes!==1?"es":""} · {p.sellPrice}g each
-                          </div>
-                          <div style={{ display:"flex", gap:"12px", fontSize:"12px", flexWrap:"wrap",
-                            background:"#F0FAF0", padding:"5px 8px", borderRadius:"6px" }}>
-                            <span style={{ color:"#2A4D10" }}>Revenue: <strong>{g(p.grossRevenue)}</strong></span>
-                            <span style={{ color:"#8B4000" }}>− Cost: <strong>{g(p.ingredientCost)}</strong></span>
-                            <span style={{ fontWeight:700, color:p.netProfit>=0?"#155724":"#7B1717" }}>
-                              = Net: <strong>{p.netProfit>=0?"+":""}{g(p.netProfit)}</strong>
-                            </span>
+                          <div style={{fontSize:"11.5px",color:"#5A7A40"}}>
+                            {group.totalDishes} dish{group.totalDishes!==1?"es":""} total
+                            &nbsp;·&nbsp;Revenue {g(group.totalGross)}
+                            &nbsp;−&nbsp;Cost {g(group.totalCost)}
                           </div>
                         </div>
-                        <div style={{ textAlign:"right", flexShrink:0 }}>
-                          <div style={{ fontFamily:"'Cinzel',serif", fontSize:"20px", fontWeight:700,
-                            color:p.netProfit>=0?"#1A6E1A":"#8B0000", lineHeight:1.1 }}>
-                            {p.netProfit>=0?"+":""}{g(p.netProfit)}
+                        <div style={{textAlign:"right",flexShrink:0}}>
+                          <div style={{fontFamily:"'Cinzel',serif",fontSize:"20px",fontWeight:700,
+                            color:group.totalNet>=0?"#1A6E1A":"#8B0000",lineHeight:1.1}}>
+                            +{g(group.totalNet)}
                           </div>
-                          <div style={{ fontSize:"10.5px", color:"#888" }}>net profit</div>
+                          <div style={{fontSize:"10px",color:"#888"}}>net profit</div>
                         </div>
                       </div>
+
+                      {/* Star mode row */}
+                      {group.star && (
+                        <div className="mode-row star">
+                          <div>
+                            <span style={{fontWeight:700,color:"#1A6E1A"}}>⭐ Star Mode</span>
+                            <span style={{color:"#5A7A40",marginLeft:"8px"}}>
+                              Cook {group.star.cooks}× → {group.star.totalDishes} dishes @ {group.star.sellPrice}g each
+                            </span>
+                          </div>
+                          <div style={{fontWeight:700,color:"#1A6E1A",fontFamily:"'Cinzel',serif",whiteSpace:"nowrap"}}>
+                            +{g(group.star.netProfit)}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Base mode row */}
+                      {group.base && (
+                        <div className="mode-row base">
+                          <div>
+                            <span style={{fontWeight:700,color:"#6B4A00"}}>📦 Base Mode</span>
+                            <span style={{color:"#8B6914",marginLeft:"8px"}}>
+                              Cook {group.base.cooks}× → {group.base.totalDishes} dishes @ {group.base.sellPrice}g each
+                            </span>
+                          </div>
+                          <div style={{fontWeight:700,color:"#6B4A00",fontFamily:"'Cinzel',serif",whiteSpace:"nowrap"}}>
+                            +{g(group.base.netProfit)}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
 
-                  {optResult.leftover.length > 0 && (
-                    <div className="panel-box" style={{ marginTop:"10px" }}>
-                      <div style={{ fontFamily:"'Cinzel',serif", fontSize:"13px", color:"#8B6914", marginBottom:"7px", fontWeight:600 }}>
+                  {/* Leftovers */}
+                  {optResult.leftover.length>0 && (
+                    <div className="panel-box" style={{marginTop:"10px"}}>
+                      <div style={{fontFamily:"'Cinzel',serif",fontSize:"13px",color:"#8B6914",marginBottom:"7px",fontWeight:600}}>
                         🧺 Leftover Ingredients
                       </div>
-                      {optResult.leftover.map(l => (
-                        <span key={l.id} className="leftover-chip">{l.name} ×{l.qty}</span>
+                      {optResult.leftover.map(l=>(
+                        <span key={l.id} className="leftover-chip">
+                          {l.name}
+                          {l.base>0 && <span> ×{l.base}</span>}
+                          {l.star>0 && <span> ⭐×{l.star}</span>}
+                        </span>
                       ))}
-                      <div style={{ fontSize:"11px", color:"#9B7B2E", marginTop:"7px" }}>
-                        These couldn't be profitably used with current costs.
+                      <div style={{fontSize:"11px",color:"#9B7B2E",marginTop:"7px"}}>
+                        These couldn't be used in any profitable recipe with current ingredient costs.
                       </div>
                     </div>
                   )}
-                  <div style={{ fontSize:"11px", color:"#9B7B50", marginTop:"10px", lineHeight:1.5 }}>
-                    Greedy optimizer: highest net-profit recipes allocated first. Results are near-optimal for most inventories.
+
+                  <div style={{fontSize:"11px",color:"#9B7B50",marginTop:"10px",lineHeight:1.5}}>
+                    Star mode revenue shown at star sell price — actual dish quality depends on RNG and your cooking bonuses.
+                    Greedy optimizer: highest-profit recipes allocated first in each pass.
                   </div>
                 </div>
               )}
             </div>
           )}
 
-          {/* ── BROWSE ── */}
-          {tab === "browse" && (
+          {/* ── BROWSE TAB ── */}
+          {tab==="browse" && (
             <div>
-              <div style={{ display:"flex", gap:"5px", marginBottom:"8px", flexWrap:"wrap", alignItems:"center" }}>
+              <div style={{display:"flex",gap:"5px",marginBottom:"8px",flexWrap:"wrap",alignItems:"center"}}>
                 {[
                   {key:"all",      label:`All (${RECIPES.length})`},
                   {key:"cookable", label:`✅ Ready (${cookableCount})`},
                   {key:"almost",   label:`🔶 Close (${almostCount})`},
-                ].map(t => (
+                ].map(t=>(
                   <button key={t.key} className={`filter-btn ${filter===t.key?"active":""}`}
-                    onClick={() => setFilter(t.key)}>{t.label}</button>
+                    onClick={()=>setFilter(t.key)}>{t.label}</button>
                 ))}
-                <select value={sortBy} onChange={e => setSortBy(e.target.value)}
-                  style={{ marginLeft:"auto", padding:"4px 8px", borderRadius:"16px", border:"1.5px solid #9B7B2E",
-                    fontSize:"12px", fontFamily:"'Crimson Text',serif", background:"#FAF5E8", color:"#3A2800", cursor:"pointer" }}>
+                <select value={sortBy} onChange={e=>setSortBy(e.target.value)}
+                  style={{marginLeft:"auto",padding:"4px 8px",borderRadius:"16px",border:"1.5px solid #9B7B2E",
+                    fontSize:"12px",fontFamily:"'Crimson Text',serif",background:"#FAF5E8",color:"#3A2800",cursor:"pointer"}}>
                   <option value="net">Sort: Total Net Gold</option>
-                  <option value="gross">Sort: Total Gross</option>
+                  <option value="gross">Sort: Gross Revenue</option>
                   <option value="price">Sort: Sell Price</option>
                   <option value="cooks">Sort: # Cooks</option>
-                  <option value="alpha">Sort: A &amp; Z</option>
+                  <option value="alpha">Sort: A–Z</option>
                 </select>
-                <input placeholder="Search…" value={search} onChange={e => setSearch(e.target.value)}
-                  style={{ padding:"4px 10px", borderRadius:"16px", border:"1.5px solid #9B7B2E", fontSize:"12px",
-                    fontFamily:"'Crimson Text',serif", background:"#FAF5E8", color:"#3A2800", outline:"none", width:"120px" }} />
+                <input placeholder="Search…" value={search} onChange={e=>setSearch(e.target.value)}
+                  style={{padding:"4px 10px",borderRadius:"16px",border:"1.5px solid #9B7B2E",fontSize:"12px",
+                    fontFamily:"'Crimson Text',serif",background:"#FAF5E8",color:"#3A2800",outline:"none",width:"120px"}}/>
               </div>
 
               <div className="scroll">
-                {displayed.map(r => {
-                  const isAlmost = r.cooks===0 && r.missing.length+r.partial.length<=2 && r.ings.some(i=>(avail[i.id]||0)>0);
-                  const cls = r.cooks>=1?"recipe-card cookable":isAlmost?"recipe-card almost":"recipe-card far";
-                  const sp = starQuality ? r.starSellPrice : r.sellPrice;
+                {displayed.map(r=>{
+                  const isAlmost=r.cooks===0&&r.missing.length+r.partial.length<=2&&r.ings.some(i=>(avail[i.id]||0)>0);
+                  const cls=r.cooks>=1?"recipe-card cookable":isAlmost?"recipe-card almost":"recipe-card far";
+                  const hasMix = totalStar > 0;
                   return (
                     <div key={r.name} className={cls}>
-                      <div style={{ display:"flex", justifyContent:"space-between", gap:"10px" }}>
-                        <div style={{ flex:1 }}>
-                          <div style={{ fontFamily:"'Cinzel',serif", fontSize:"14px", color:r.cooks>=1?"#1A3A08":"#4A3000", fontWeight:600, marginBottom:"3px" }}>
+                      <div style={{display:"flex",justifyContent:"space-between",gap:"10px"}}>
+                        <div style={{flex:1}}>
+                          <div style={{fontFamily:"'Cinzel',serif",fontSize:"14px",color:r.cooks>=1?"#1A3A08":"#4A3000",fontWeight:600,marginBottom:"3px"}}>
                             {r.cooks>=1?"✅":isAlmost?"🔶":"❌"} {r.name}
                           </div>
-                          <div style={{ fontSize:"12px", color:"#8B6914" }}>
-                            {r.cooks>=1
-                              ? <><strong>🍳 ×{r.cooks}</strong> · {r.servings} dishes/cook · <span style={{fontWeight:700,color:r.totalNet>=0?"#1A6E1A":"#8B0000"}}>{r.totalNet>=0?"+":""}{r.totalNet}g net</span></>
-                              : isAlmost ? `Need: ${[...r.missing,...r.partial].map(s=>lbl(s.id)).join(", ")}`
-                                         : `Missing ${r.missing.length+r.partial.length} ingredient${r.missing.length+r.partial.length!==1?"s":""}`}
+                          <div style={{fontSize:"12px",color:"#8B6914"}}>
+                            {r.cooks>=1 ? (
+                              <>
+                                🍳 ×{r.cooks} · {r.servings} dishes/cook
+                                {hasMix && r.totalStarNet!==r.totalBaseNet
+                                  ? <span style={{marginLeft:"6px"}}>
+                                      Net: <span style={{color:"#6B4A00",fontWeight:600}}>{g(r.totalBaseNet)}</span>
+                                      <span style={{color:"#999"}}> – </span>
+                                      <span style={{color:"#1A6E1A",fontWeight:600}}>⭐{g(r.totalStarNet)}</span>
+                                    </span>
+                                  : <span style={{marginLeft:"6px",fontWeight:700,color:r.totalBaseNet>=0?"#1A6E1A":"#8B0000"}}>
+                                      Net: {r.totalBaseNet>=0?"+":""}{g(r.totalBaseNet)}
+                                    </span>
+                                }
+                              </>
+                            ) : isAlmost
+                              ? `Need: ${[...r.missing,...r.partial].map(s=>lbl(s.id)).join(", ")}`
+                              : `Missing ${r.missing.length+r.partial.length} ingredient${r.missing.length+r.partial.length!==1?"s":""}`
+                            }
                           </div>
                         </div>
-                        <div style={{ textAlign:"right", flexShrink:0 }}>
-                          <div style={{ fontFamily:"'Cinzel',serif", fontSize:"17px", color:"#C8922A", fontWeight:700 }}>{sp}g</div>
-                          <div style={{ fontSize:"10px", color:"#999" }}>per dish{starQuality?" ⭐":""}</div>
+                        <div style={{textAlign:"right",flexShrink:0}}>
+                          <div style={{fontSize:"13px",color:"#C8922A",fontFamily:"'Cinzel',serif",fontWeight:700}}>
+                            {r.sellPrice}g
+                          </div>
+                          <div style={{fontSize:"10.5px",color:"#C8A020"}}>⭐ {r.starSellPrice}g</div>
                         </div>
                       </div>
-                      <div style={{ marginTop:"7px", display:"flex", flexWrap:"wrap", gap:"4px" }}>
-                        {r.ingStatus.map(({ id, qty, have, ok }) => (
+                      <div style={{marginTop:"7px",display:"flex",flexWrap:"wrap",gap:"4px"}}>
+                        {r.ingStatus.map(({id,qty,have,ok})=>(
                           <span key={id} className={`tag ${have===0?"miss":!ok?"partial":"have"}`}>
                             {have===0?"✗":!ok?"⚠":"✓"} {lbl(id)}{qty>1&&<span style={{opacity:0.7}}>×{qty}</span>}
                             {have>0&&<span style={{opacity:0.7}}> ({have})</span>}
@@ -852,8 +1030,8 @@ export default function App() {
         </div>
       </div>
 
-      <div style={{ textAlign:"center", color:"#9B7B50", fontSize:"11px", marginTop:"12px" }}>
-        69 recipes · prices from your spreadsheet · star quality uses exact star prices, not an estimate
+      <div style={{textAlign:"center",color:"#9B7B50",fontSize:"11px",marginTop:"12px"}}>
+        69 recipes · star mode revenue shown at star sell price · actual quality is RNG-based
       </div>
     </div>
   );
