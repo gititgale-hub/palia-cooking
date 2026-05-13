@@ -133,17 +133,17 @@ const STYLE = `
 ══════════════════════════════════════════════════════ */
 const INGREDIENT_CATEGORIES = [
   { name:"Fish", icon:"🐟", items:[
-    { id:"cutthroat_trout",  name:"Cutthroat Trout",  provides:["any_fish","any_trout"],   sellPrice:125, starPrice:187 },
-    { id:"prism_trout",      name:"Prism Trout",       provides:["any_fish","any_trout"],   sellPrice:115, starPrice:172 },
-    { id:"rainbow_trout",    name:"Rainbow Trout",     provides:["any_fish","any_trout"],   sellPrice:90,  starPrice:135 },
-    { id:"bahari_bass",      name:"Bahari Bass",       provides:["any_fish","any_bass"],    sellPrice:36,  starPrice:54  },
-    { id:"black_sea_bass",   name:"Black Sea Bass",    provides:["any_fish","any_bass"],    sellPrice:100, starPrice:150 },
-    { id:"largemouth_bass",  name:"Largemouth Bass",   provides:["any_fish","any_bass"],    sellPrice:49,  starPrice:73  },
-    { id:"smallmouth_bass",  name:"Smallmouth Bass",   provides:["any_fish","any_bass"],    sellPrice:49,  starPrice:73  },
-    { id:"bahari_bream",     name:"Bahari Bream",      provides:["any_fish","bahari_bream"],sellPrice:55,  starPrice:82  },
-    { id:"channel_catfish",  name:"Channel Catfish",   provides:["any_fish","any_catfish"], sellPrice:90,  starPrice:135 },
-    { id:"kilima_catfish",   name:"Kilima Catfish",    provides:["any_fish","any_catfish"], sellPrice:55,  starPrice:82  },
-    { id:"stalking_catfish", name:"Stalking Catfish",  provides:["any_fish","any_catfish"], sellPrice:200, starPrice:300 },
+    { id:"cutthroat_trout",  name:"Cutthroat Trout",  special:true, provides:["any_fish","any_trout"],   sellPrice:125, starPrice:187 },
+    { id:"prism_trout",      name:"Prism Trout",       special:true, provides:["any_fish","any_trout"],   sellPrice:115, starPrice:172 },
+    { id:"rainbow_trout",    name:"Rainbow Trout",     special:true, provides:["any_fish","any_trout"],   sellPrice:90,  starPrice:135 },
+    { id:"bahari_bass",      name:"Bahari Bass",       special:true, provides:["any_fish","any_bass"],    sellPrice:36,  starPrice:54  },
+    { id:"black_sea_bass",   name:"Black Sea Bass",    special:true, provides:["any_fish","any_bass"],    sellPrice:100, starPrice:150 },
+    { id:"largemouth_bass",  name:"Largemouth Bass",   special:true, provides:["any_fish","any_bass"],    sellPrice:49,  starPrice:73  },
+    { id:"smallmouth_bass",  name:"Smallmouth Bass",   special:true, provides:["any_fish","any_bass"],    sellPrice:49,  starPrice:73  },
+    { id:"bahari_bream",     name:"Bahari Bream",      special:true, provides:["any_fish","bahari_bream"],sellPrice:55,  starPrice:82  },
+    { id:"channel_catfish",  name:"Channel Catfish",   special:true, provides:["any_fish","any_catfish"], sellPrice:90,  starPrice:135 },
+    { id:"kilima_catfish",   name:"Kilima Catfish",    special:true, provides:["any_fish","any_catfish"], sellPrice:55,  starPrice:82  },
+    { id:"stalking_catfish", name:"Stalking Catfish",  special:true, provides:["any_fish","any_catfish"], sellPrice:200, starPrice:300 },
   ]},
   { name:"Crabs & Seafood", icon:"🦀", items:[
     { id:"bahari_crab",     name:"Bahari Crab",     provides:["any_crab"],    sellPrice:21,  starPrice:31  },
@@ -341,23 +341,39 @@ function buildPool(quantities, extraItems, mode = "combined") {
 
 // Cheapest cost for each provided_id. Star mode: prefer star providers, fall back to base.
 function buildCheapest(quantities, costs, extraItems, mode = "base") {
-  const map = {};
+  // Track cheapest overall AND cheapest non-special (for any_fish reservation)
+  const mapAll = {}, mapNonSpecial = {};
   [...ALL_ITEMS, ...extraItems].forEach(item => {
     const starQ = getStar(quantities, item.id);
     const baseQ = getBase(quantities, item.id);
-    if (mode === "star" && starQ > 0) {
-      const c = costs[item.id + "_star"] ?? item.starPrice;
-      item.provides.forEach(p => { if (map[p] === undefined || c < map[p]) map[p] = c; });
-    } else if (mode === "star" && baseQ > 0) {
-      // fallback to base cost when no star available
-      const c = costs[item.id] ?? item.sellPrice;
-      item.provides.forEach(p => { if (map[p] === undefined || c < map[p]) map[p] = c; });
-    } else if (mode === "base" && baseQ > 0) {
-      const c = costs[item.id] ?? item.sellPrice;
-      item.provides.forEach(p => { if (map[p] === undefined || c < map[p]) map[p] = c; });
-    }
+    const hasQty = mode === "star" ? (starQ > 0 || baseQ > 0) : baseQ > 0;
+    if (!hasQty) return;
+    const c = (mode === "star" && starQ > 0)
+      ? (costs[item.id + "_star"] ?? item.starPrice)
+      : (costs[item.id] ?? item.sellPrice);
+    item.provides.forEach(p => {
+      if (mapAll[p] === undefined || c < mapAll[p]) mapAll[p] = c;
+      if (!item.special && (mapNonSpecial[p] === undefined || c < mapNonSpecial[p])) mapNonSpecial[p] = c;
+    });
   });
+  // For any_fish: use non-special cost if available (protects special fish from generic slots)
+  const map = { ...mapAll };
+  if (mapNonSpecial["any_fish"] !== undefined) map["any_fish"] = mapNonSpecial["any_fish"];
   return map;
+}
+
+// Sort providers for a given slot — cheapest first, with special fish reserved last for any_fish
+function sortProviders(items, id, costFn) {
+  const isAnyFish = id === "any_fish";
+  return [...items].sort((a, b) => {
+    if (isAnyFish) {
+      // Non-special (custom fish) before special (named fish)
+      const aSpec = a.special === true, bSpec = b.special === true;
+      if (aSpec !== bSpec) return aSpec ? 1 : -1;
+    }
+    // Within same group: cheapest first
+    return costFn(a) - costFn(b);
+  });
 }
 
 // Deduct from remaining (mutates). Returns total cost of ingredients used.
@@ -367,10 +383,12 @@ function deduct(recipe, numCooks, remaining, costs, extraItems, mode = "base") {
   for (const {id, qty} of recipe.ings) {
     let need = qty * numCooks;
     if (mode === "star") {
-      // Star first
-      const starProvs = allItems
-        .filter(item => item.provides.includes(id) && getStar(remaining, item.id) > 0)
-        .sort((a,b) => getStar(remaining, b.id) - getStar(remaining, a.id));
+      // Star first (cheapest star, non-special before special for any_fish)
+      const starProvs = sortProviders(
+        allItems.filter(item => item.provides.includes(id) && getStar(remaining, item.id) > 0),
+        id,
+        item => costs[item.id + "_star"] ?? item.starPrice
+      );
       for (const p of starProvs) {
         if (need <= 0) break;
         const use = Math.min(need, getStar(remaining, p.id));
@@ -380,10 +398,12 @@ function deduct(recipe, numCooks, remaining, costs, extraItems, mode = "base") {
         need -= use;
       }
     }
-    // Base (always runs for base mode; runs as fallback for star mode)
-    const baseProvs = allItems
-      .filter(item => item.provides.includes(id) && getBase(remaining, item.id) > 0)
-      .sort((a,b) => getBase(remaining, b.id) - getBase(remaining, a.id));
+    // Base: cheapest first, non-special before special for any_fish
+    const baseProvs = sortProviders(
+      allItems.filter(item => item.provides.includes(id) && getBase(remaining, item.id) > 0),
+      id,
+      item => costs[item.id] ?? item.sellPrice
+    );
     for (const p of baseProvs) {
       if (need <= 0) break;
       const use = Math.min(need, getBase(remaining, p.id));
