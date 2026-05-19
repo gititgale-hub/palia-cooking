@@ -156,6 +156,7 @@ const INGREDIENT_CATEGORIES = [
     { id:"sernuk_meat",              name:"Sernuk Meat",              provides:["any_red_meat","sernuk_meat"], sellPrice:16, starPrice:24 },
     { id:"muujin_meat",              name:"Muujin Meat",              provides:["any_red_meat","muujin_meat"], sellPrice:16, starPrice:24 },
     { id:"elder_clam_mushroom_meat", name:"Elder Clam Mushroom Meat", provides:["any_red_meat"],               sellPrice:23, starPrice:34 },
+    { id:"jaakcat_meat",             name:"Jaakcat Meat",             provides:["any_red_meat"],               sellPrice:60, starPrice:90 },
   ]},
   { name:"Mushrooms", icon:"🍄", items:[
     { id:"brightshroom",       name:"Brightshroom",       provides:["any_mushroom"], sellPrice:60, starPrice:90 },
@@ -215,8 +216,10 @@ const INGREDIENT_CATEGORIES = [
     { id:"bok_choy_kimchi",     name:"Bok Choy Kimchi",     provides:["any_kimchi"], sellPrice:45, starPrice:67 },
   ]},
   { name:"Rare Forage", icon:"🌸", items:[
-    { id:"emerald_carpet_moss", name:"Emerald Carpet Moss", provides:["emerald_carpet_moss"], sellPrice:20, starPrice:20 },
-    { id:"crystal_lake_lotus",  name:"Crystal Lake Lotus",  provides:["crystal_lake_lotus"],  sellPrice:25, starPrice:25 },
+    { id:"emerald_carpet_moss", name:"Emerald Carpet Moss", provides:["emerald_carpet_moss"], sellPrice:20,  starPrice:20 },
+    { id:"crystal_lake_lotus",  name:"Crystal Lake Lotus",  provides:["crystal_lake_lotus"],  sellPrice:25,  starPrice:25 },
+    { id:"elderwood_lotus",     name:"Elderwood Lotus",     provides:["elderwood_lotus"],     sellPrice:60,  starPrice:90 },
+    { id:"royal_wisteria",      name:"Royal Wisteria",      provides:["royal_wisteria"],      sellPrice:145, starPrice:217 },
   ]},
 ];
 
@@ -317,6 +320,12 @@ const RECIPES = [
   {name:"Pumpkin Pie",             sellPrice:108, starSellPrice:162, servings:3, ings:[{id:"butter",qty:1},{id:"milk",qty:1},{id:"rockhopper_pumpkin",qty:1},{id:"spice_sprouts",qty:1},{id:"wheat",qty:3}]},
   {name:"Steak Dinner",            sellPrice:34,  starSellPrice:51,  servings:3, ings:[{id:"any_red_meat",qty:1},{id:"wheat",qty:1},{id:"butter",qty:1},{id:"spice_sprouts",qty:1}]},
   {name:"Stuffed Cabbage Rolls",   sellPrice:35,  starSellPrice:52,  servings:3, ings:[{id:"napa_cabbage",qty:1},{id:"any_red_meat",qty:1},{id:"any_mushroom",qty:1},{id:"carrot",qty:1},{id:"wild_green_onion",qty:1}]},
+  {name:"Beans on Toast",          sellPrice:59,  starSellPrice:88,  servings:3, ings:[{id:"batterfly_beans",qty:1},{id:"wheat",qty:3},{id:"butter",qty:1},{id:"tomato",qty:1}]},
+  {name:"Jaakcat Stew",            sellPrice:66,  starSellPrice:99,  servings:3, ings:[{id:"jaakcat_meat",qty:3},{id:"flowtato",qty:1},{id:"spice_sprouts",qty:3},{id:"wild_green_onion",qty:1}]},
+  {name:"Lotus Leaf Tea",          sellPrice:29,  starSellPrice:58,  servings:3, ings:[{id:"elderwood_lotus",qty:1},{id:"sweet_leaf",qty:1}]},
+  {name:"Rice 'n Beans",           sellPrice:77,  starSellPrice:115, servings:3, ings:[{id:"batterfly_beans",qty:3},{id:"rice",qty:3},{id:"spicy_pepper",qty:1},{id:"spice_sprouts",qty:1}]},
+  {name:"Smores",                  sellPrice:33,  starSellPrice:49,  servings:2, ings:[{id:"wheat",qty:2},{id:"sugar",qty:1},{id:"kopaa_nuts",qty:1}]},
+  {name:"Wisteria Tea",            sellPrice:102, starSellPrice:153, servings:3, ings:[{id:"royal_wisteria",qty:1},{id:"dari_cloves",qty:1}]},
 ];
 
 /* ══════════════════════════════════════════════════════
